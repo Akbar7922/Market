@@ -33,4 +33,15 @@ class BrandService
         }
     }
 
+    public function update($data , $slug){
+        try {
+            $brand = Brand::where('slug' , $slug)->first();
+            $brand->fill($data);
+            $brand->save();
+            return $brand->id;
+        }catch (QueryException $exception){
+            return 0;
+        }
+    }
+
 }

@@ -75,7 +75,7 @@
                         <!--begin::Table body-->
                         <tbody class="fw-bold text-gray-600 text-center">
                             @foreach ($brands->items() as $item)
-                                <tr>
+                                <tr data-brand="{{ $item }}">
                                     <td>
                                         <img src="{{ asset('image/brands/' . $item->id . '.png') }}" alt=""
                                             class="img-thumbnail dashboard-img">
@@ -113,9 +113,8 @@
                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
                                             data-kt-menu="true">
                                             <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="" class="menu-link px-3"
-                                                    data-kt-customer-table-filter="delete_row">ویرایش</a>
+                                            <div class="menu-item px-3 edit_brand" data-link="{{ route('brand.update' , $item->slug) }}">
+                                                <span class="menu-link px-3">ویرایش</span>
                                             </div>
                                             <!--end::Menu item-->
                                             <!--begin::Menu item-->
@@ -194,6 +193,7 @@
                             <!--begin::Input-->
                             <div>
                                 <select name="parent_brand_id" id="parent" class="form-control">
+                                    <option value="1">فاقد برند والد</option>
                                     @foreach ($brands->items() as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
@@ -256,6 +256,118 @@
         </div>
     </div>
     <!-- End Gallery Modal -->
+    <!-- Start Edit Modal -->
+    <div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">ثبت برند جدید</h5>
+
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                        aria-label="Close">
+                        <span class="svg-icon svg-icon-2x"></span>
+                    </div>
+                    <!--end::Close-->
+                </div>
+
+                <div class="modal-body">
+                    <!--begin::Form-->
+                    <form action="" enctype="multipart/form-data" method="post" >
+                        @csrf
+                        @method('patch')
+                        <!--begin::Input group-->
+                        <div class="fv-row">
+                            <!--begin::Tags-->
+                            <label class="fs-6 fw-bold form-label mt-3">
+                                <span class="required">نام برند</span>
+                                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
+                                    title="نام برند (اجباری)"></i>
+                            </label>
+                            <!--end::Tags-->
+                            <!--begin::Input-->
+                            <div>
+                                <input type="text" class="form-control" name="name" id="name" />
+                            </div>
+                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row">
+                            <!--begin::Tags-->
+                            <label class="fs-6 fw-bold form-label mt-3">
+                                <span class="required">برند والد</span>
+                                <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
+                                    title="برند والد (اجباری)"></i>
+                            </label>
+                            <!--end::Tags-->
+                            <!--begin::Input-->
+                            <div>
+                                <select name="parent_brand_id" id="parent" class="form-control">
+                                    <option value="1">فاقد برند والد</option>
+                                    @foreach ($brands->items() as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row">
+                            <!--begin::Tags-->
+                            <label class="fs-6 fw-bold form-label mt-3">
+                                <span>رنگ</span>
+                            </label>
+                            <!--end::Tags-->
+                            <!--begin::Input-->
+                            <div>
+                                <input type="text" class="form-control" name="color" id="color" />
+                            </div>
+                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row">
+                            <!--begin::Tags-->
+                            <label class="fs-6 fw-bold form-label mt-3">
+                                <span>توضیحات</span>
+                            </label>
+                            <!--end::Tags-->
+                            <!--begin::Input-->
+                            <div>
+                                <textarea name="description" id="description" rows="3" class="form-control"></textarea>
+                            </div>
+                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="fv-row">
+                            <!--begin::Tags-->
+                            <label class="fs-6 fw-bold form-label mt-3">
+                                <span>تصویر برند</span>
+                            </label>
+                            <!--end::Tags-->
+                            <!--begin::Input-->
+                            <div>
+                                <input type="file" name="pic" id="pic" class="form-control">
+                            </div>
+                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                        </div>
+                        <!--end::Input group-->
+                    </form>
+                    <!--end::Form-->
+
+                    <div class="modal-footer">
+                        <button type="button" id="edit_brand_btn" class="btn btn-primary col-sm-2">تایید</button>
+                        <button type="button" class="btn btn-danger col-sm-1" onclick="$('#modal_edit').modal('hide');">انصراف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Gallery Modal -->
 @endsection
 @section('script')
     <script>
@@ -280,6 +392,22 @@
 
         $('#add_brand_btn').click(function() {
             $('#modal_add form').submit();
+        });
+
+        $('#edit_brand_btn').click(function() {
+            $('#modal_edit form').submit();
+        });
+
+        $('.edit_brand').click(function() {
+            let modal = $('#modal_edit');
+            modal.modal('show');
+            currentRow = $(this).closest('tr');
+            let brand = JSON.parse(currentRow.attr('data-brand'));
+            modal.find('form').attr('action' , $(this).attr('data-link'));
+            modal.find('#name').val(brand.name);
+            modal.find('#color').val(brand.color);
+            modal.find('#description').val(brand.description);
+            modal.find('#parent option[value='+brand.parent_brand_id+']').prop('selected' , true);
         });
 
         $('.delete_brand').click(function() {
