@@ -1,0 +1,31 @@
+.activationCode_item{
+    width:10%;
+    display: inline-block;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.5em;
+    padding: 0.2rem 0.2rem !important;
+}
+.form-terms{
+    text-align: center;
+}
+.error_input{
+    color: red;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    padding-top: 10px;
+    display: none;
+}
+.code_timer {
+    width: 30%;
+    display: none;
+    text-align: center;
+    font-size: 1rem;
+    margin: 5px 20px;
+    border: 1px solid red;
+    border-radius: 8px;
+    padding: 5px 0px;
+}
+.form-control{
+    border-radius: 5px;
+}
