@@ -196,13 +196,13 @@ Like: www.facebook.com/keenthemes
                                     <span class="menu-title">برندها</span>
                                 </a>
                             </div>
-                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                                <span class="menu-link">
+                            <div class="menu-item menu-accordion">
+                                <a  href="{{ route('category.index') }}" class="menu-link">
                                     <span class="menu-icon">
                                         <span class="fas fa-cat"></span>
                                     </span>
                                     <span class="menu-title">دسته بندی ها</span>
-                                </span>
+                                </a>
                             </div>
                             <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                                 <span class="menu-link">

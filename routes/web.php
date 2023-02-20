@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\Backend\CategoryController;
 use App\Http\Controllers\Web\Backend\BrandController;
 use App\Http\Controllers\Web\Backend\ShopProductController;
 use App\Http\Controllers\Web\Backend\ShopController;
@@ -28,7 +29,7 @@ use App\Http\Controllers\Web\Front\SearchController;
 */
 
 Route::get('/a', function () {
-    return public_path('image/brands/');
+    var_dump(file_exists(public_path("image\categories\2.png")));
 });
 
 Auth::routes();
@@ -55,6 +56,7 @@ Route::middleware(['auth' , 'admin'])->group(function () {
     Route::resource('/admin/shopProduct', ShopProductController::class);
 
     Route::resource('/admin/brand', BrandController::class);
+    Route::resource('/admin/category' , CategoryController::class);
 });
 Route::post('/admin/shopProduct/{product_id}/picture/add', [ShopProductController::class, 'storePictures'])->name('storePicture');
 Route::post('/admin/shopProduct/{product_id}/picture/delete', [ShopProductController::class, 'deleteProductPic'])->name('deletePicture');

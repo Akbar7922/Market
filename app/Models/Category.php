@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Category
@@ -37,8 +38,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Category extends Model
 {
-    use HasFactory;
-    use Sluggable;
+    use HasFactory , Sluggable , SoftDeletes;
+
+    protected $fillable = ['name' , 'parent_cat_id' , 'color' , 'description' , 'slug'];
+    protected $timestamp = true;
 
     public function parent()
     {

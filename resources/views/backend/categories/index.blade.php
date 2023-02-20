@@ -36,7 +36,7 @@
                         <!--begin::Add customer-->
                         <button type="button" class="btn btn-primary" id="add_btn" data-toggle="modal"
                             data-target="#modal_add" onclick="$('#modal_add').modal('show');">افزودن
-                            برند جدید</button>
+                            دسته بندی جدید</button>
                         <!--end::Add customer-->
                         <!--end::Toolbar-->
                         <!--begin::گروه actions-->
@@ -64,7 +64,7 @@
                             <tr class="text-center text-gray-400 fw-bolder fs-7 gs-0">
                                 <th class="min-w-125px">تصویر</th>
                                 <th class="min-w-125px">نام</th>
-                                <th class="min-w-125px">برند والد</th>
+                                <th class="min-w-125px">دسته بندی والد</th>
                                 <th class="min-w-125px">رنگ</th>
                                 <th class="min-w-125px">توضیحات</th>
                                 <th class="min-w-70px">عملیات</th>
@@ -74,10 +74,10 @@
                         <!--end::Table head-->
                         <!--begin::Table body-->
                         <tbody class="fw-bold text-gray-600 text-center">
-                            @foreach ($brands->items() as $item)
-                                <tr data-brand="{{ $item }}">
+                            @foreach ($categories->items() as $item)
+                                <tr data-category="{{ $item }}">
                                     <td>
-                                        <img src="{{ asset('image/brands/' . $item->id . '.png') }}" alt=""
+                                        <img src="{{ asset('image/categories/' . $item->id . '.png') }}" alt=""
                                             class="img-thumbnail dashboard-img">
                                     </td>
                                     <td>
@@ -85,7 +85,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-gray-800 text-hover-primary mb-1">{{ $item->parent_brand_id == 1 ? 'دسته اصلی' : $item->parent->name }}</span>
+                                            class="text-gray-800 text-hover-primary mb-1">{{ $item->parent_cat_id == 1 ? 'دسته اصلی' : $item->parent->name }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -113,13 +113,13 @@
                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4"
                                             data-kt-menu="true">
                                             <!--begin::Menu item-->
-                                            <div class="menu-item px-3 edit_brand" data-link="{{ route('brand.update' , $item->slug) }}">
+                                            <div class="menu-item px-3 edit_category" data-link="{{ route('category.update' , $item->slug) }}">
                                                 <span class="menu-link px-3">ویرایش</span>
                                             </div>
                                             <!--end::Menu item-->
                                             <!--begin::Menu item-->
-                                            <div class="menu-item px-3 delete_brand"
-                                                data-link="{{ route('brand.destroy', $item->slug) }}"
+                                            <div class="menu-item px-3 delete_category"
+                                                data-link="{{ route('category.destroy', $item->slug) }}"
                                                 data-name="{{ $item->name }}">
                                                 <span class="menu-link px-3">حذف</span>
                                             </div>
@@ -135,7 +135,7 @@
                     </table>
                     <!--end::Table-->
                     <div>
-                        {{ $brands->links() }}
+                        {{ $categories->links() }}
                     </div>
                 </div>
                 <!--end::Card body-->
@@ -151,7 +151,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ثبت برند جدید</h5>
+                    <h5 class="modal-title">ثبت دسته بندی جدید</h5>
 
                     <!--begin::Close-->
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
@@ -163,15 +163,15 @@
 
                 <div class="modal-body">
                     <!--begin::Form-->
-                    <form action="{{ route('brand.store') }}" enctype="multipart/form-data" method="post" >
+                    <form action="{{ route('category.store') }}" enctype="multipart/form-data" method="post" >
                         @csrf
                         <!--begin::Input group-->
                         <div class="fv-row">
                             <!--begin::Tags-->
                             <label class="fs-6 fw-bold form-label mt-3">
-                                <span class="required">نام برند</span>
+                                <span class="required">نام دسته بندی</span>
                                 <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                                    title="نام برند (اجباری)"></i>
+                                    title="نام دسته بندی (اجباری)"></i>
                             </label>
                             <!--end::Tags-->
                             <!--begin::Input-->
@@ -185,16 +185,16 @@
                         <div class="fv-row">
                             <!--begin::Tags-->
                             <label class="fs-6 fw-bold form-label mt-3">
-                                <span class="required">برند والد</span>
+                                <span class="required">دسته بندی والد</span>
                                 <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                                    title="برند والد (اجباری)"></i>
+                                    title="دسته بندی والد (اجباری)"></i>
                             </label>
                             <!--end::Tags-->
                             <!--begin::Input-->
                             <div>
-                                <select name="parent_brand_id" id="parent" class="form-control">
-                                    <option value="1">فاقد برند والد</option>
-                                    @foreach ($brands->items() as $item)
+                                <select name="parent_cat_id" id="parent" class="form-control">
+                                    <option value="1">فاقد دسته بندی والد</option>
+                                    @foreach ($categories->items() as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
@@ -234,7 +234,7 @@
                         <div class="fv-row">
                             <!--begin::Tags-->
                             <label class="fs-6 fw-bold form-label mt-3">
-                                <span>تصویر برند</span>
+                                <span>تصویر دسته بندی</span>
                             </label>
                             <!--end::Tags-->
                             <!--begin::Input-->
@@ -248,7 +248,7 @@
                     <!--end::Form-->
 
                     <div class="modal-footer">
-                        <button type="button" id="add_brand_btn" class="btn btn-primary col-sm-2">تایید</button>
+                        <button type="button" id="add_category_btn" class="btn btn-primary col-sm-2">تایید</button>
                         <button type="button" class="btn btn-danger col-sm-1" onclick="$('#modal_add').modal('hide');">انصراف</button>
                     </div>
                 </div>
@@ -262,7 +262,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">ویرایش برند جدید</h5>
+                    <h5 class="modal-title">ویرایش دسته بندی جدید</h5>
 
                     <!--begin::Close-->
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
@@ -281,9 +281,9 @@
                         <div class="fv-row">
                             <!--begin::Tags-->
                             <label class="fs-6 fw-bold form-label mt-3">
-                                <span class="required">نام برند</span>
+                                <span class="required">نام دسته بندی</span>
                                 <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                                    title="نام برند (اجباری)"></i>
+                                    title="نام دسته بندی (اجباری)"></i>
                             </label>
                             <!--end::Tags-->
                             <!--begin::Input-->
@@ -297,16 +297,16 @@
                         <div class="fv-row">
                             <!--begin::Tags-->
                             <label class="fs-6 fw-bold form-label mt-3">
-                                <span class="required">برند والد</span>
+                                <span class="required">دسته بندی والد</span>
                                 <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                                    title="برند والد (اجباری)"></i>
+                                    title="دسته بندی والد (اجباری)"></i>
                             </label>
                             <!--end::Tags-->
                             <!--begin::Input-->
                             <div>
-                                <select name="parent_brand_id" id="parent" class="form-control">
-                                    <option value="1">فاقد برند والد</option>
-                                    @foreach ($brands->items() as $item)
+                                <select name="parent_cat_id" id="parent" class="form-control">
+                                    <option value="1">فاقد دسته بندی والد</option>
+                                    @foreach ($categories->items() as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                                     @endforeach
                                 </select>
@@ -346,7 +346,7 @@
                         <div class="fv-row">
                             <!--begin::Tags-->
                             <label class="fs-6 fw-bold form-label mt-3">
-                                <span>تصویر برند</span>
+                                <span>تصویر دسته بندی</span>
                             </label>
                             <!--end::Tags-->
                             <!--begin::Input-->
@@ -360,7 +360,7 @@
                     <!--end::Form-->
 
                     <div class="modal-footer">
-                        <button type="button" id="edit_brand_btn" class="btn btn-primary col-sm-2">تایید</button>
+                        <button type="button" id="edit_category_btn" class="btn btn-primary col-sm-2">تایید</button>
                         <button type="button" class="btn btn-danger col-sm-1" onclick="$('#modal_edit').modal('hide');">انصراف</button>
                     </div>
                 </div>
@@ -390,30 +390,30 @@
             });
         @endif
 
-        $('#add_brand_btn').click(function() {
+        $('#add_category_btn').click(function() {
             $('#modal_add form').submit();
         });
 
-        $('#edit_brand_btn').click(function() {
+        $('#edit_category_btn').click(function() {
             $('#modal_edit form').submit();
         });
 
-        $('.edit_brand').click(function() {
+        $('.edit_category').click(function() {
             let modal = $('#modal_edit');
             modal.modal('show');
             currentRow = $(this).closest('tr');
-            let brand = JSON.parse(currentRow.attr('data-brand'));
+            let category = JSON.parse(currentRow.attr('data-category'));
             modal.find('form').attr('action' , $(this).attr('data-link'));
-            modal.find('#name').val(brand.name);
-            modal.find('#color').val(brand.color);
-            modal.find('#description').val(brand.description);
-            modal.find('#parent option[value='+brand.parent_brand_id+']').prop('selected' , true);
+            modal.find('#name').val(category.name);
+            modal.find('#color').val(category.color);
+            modal.find('#description').val(category.description);
+            modal.find('#parent option[value='+category.parent_cat_id+']').prop('selected' , true);
         });
 
-        $('.delete_brand').click(function() {
+        $('.delete_category').click(function() {
             let name = $(this).attr('data-name');
             Swal.fire({
-                html: `آیا از حذف برند <span class="badge badge-primary">${name}</span> مطمئن هستید ؟`,
+                html: `آیا از حذف دسته بندی <span class="badge badge-primary">${name}</span> مطمئن هستید ؟`,
                 icon: "question",
                 buttonsStyling: false,
                 showCancelButton: true,
@@ -425,12 +425,12 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    deleteBrand($(this));
+                    deleteCategory($(this));
                 }
             });
         });
 
-        function deleteBrand(element) {
+        function deleteCategory(element) {
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': token
