@@ -68,12 +68,13 @@ class UserService
 
     public function updateUserAddress($user, $request)
     {
+        $cityService = new CityService();
         $data = [
             'title' => $request->title,
             'city_id' => $request->city_id,
-            'city' => trim($request->city),
+            'city' => $cityService->getName($request->city_id),
             'state_id' => $request->state_id,
-            'state' => trim($request->state),
+            'state' => $cityService->getName($request->state_id),
             'postalCode' => $request->postalCode,
             'address' => $request->address,
             'isSelect' => 0,

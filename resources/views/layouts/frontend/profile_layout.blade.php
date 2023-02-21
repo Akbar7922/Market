@@ -219,10 +219,10 @@
                     <div class="faq-tab">
                         <ul class="sidebar">
                             <li class="nav-item">
-                                <a class="nav-link active">اطلاعات حساب</a>
+                                <a href="{{ route('profile') }}" class="nav-link @if(request()->url() == route('profile')) active @endif ">اطلاعات حساب</a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('profile.addresses') }}" class="nav-link">آدرس</a>
+                                <a href="{{ route('profile.addresses') }}" class="nav-link @if(request()->url() == route('profile.addresses')) active @endif ">آدرس</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link">سفارشات من </a>

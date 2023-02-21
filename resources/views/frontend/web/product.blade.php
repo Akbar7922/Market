@@ -11,6 +11,11 @@
             background-color: var(--theme-color);
             color: white;
         }
+        .row .modal-footer{
+            margin-top: 0.8rem;
+            color: var(--theme-color);
+            font-weight: bold;
+        }
     </style>
 @endsection
 @section('title')
@@ -190,6 +195,9 @@
                                         class="spinner-border spinner-border-sm align-middle"
                                         style="display: none;"></span>
                                 </button>
+                            </div>
+                            <div class="row modal-footer">
+                                <span>{{"* واحد فروش : ".$product->unit->name." * "}}</span>
                             </div>
                         </div>
                     </div>

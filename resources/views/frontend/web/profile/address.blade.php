@@ -1,8 +1,18 @@
 @extends('layouts.frontend.profile_layout')
 @section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('asset/front/abzar/css/sweetalert2.min.css') }}">
+
     <style>
         .modal-footer>* {
             min-height: 45px !important;
+        }
+
+        .swal2-actions>button {
+            margin-right: 12px;
+            margin-left: 12px;
+            border-radius: 8px;
+            min-height: 40px;
+            min-width: 85px;
         }
     </style>
 @endsection
@@ -40,8 +50,12 @@
                                                 </div>
                                             </div>
                                             <div class="bottom">
-                                                <button class="bottom_btn edit_address" data-position="{{ $key }}">ویرایش</button>
-                                                <button class="bottom_btn delete_address">حذف </button>
+                                                <button class="btn btn-outline-success rounded edit_address"
+                                                    data-position="{{ $key }}">ویرایش</button>
+                                                <button class="btn btn-outline-danger btn-rounded delete_address"
+                                                    data-position="{{ $key }}" data-title="{{ $address->title }}">
+                                                    <i class="fa fa-trash-o" style="vertical-align: middle"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -96,7 +110,8 @@
                             <!--end::Tags-->
                             <!--begin::Input-->
                             <div>
-                                <select name="state_id" id="state" class="form-control rounded">
+                                <select name="state_id" id="state" data-element="modal_add"
+                                    class="form-control rounded">
                                     @foreach ($states as $state)
                                         <option value="{{ $state->id }}">{{ $state->name }}</option>
                                     @endforeach
@@ -179,6 +194,7 @@
                     <!--begin::Form-->
                     <form action="{{ route('profile.updateAddress') }}" enctype="multipart/form-data" method="post">
                         @csrf
+                        <input type="hidden" name="position">
                         <!--begin::Input group-->
                         <div class="fv-row">
                             <!--begin::Tags-->
@@ -202,7 +218,8 @@
                             <!--end::Tags-->
                             <!--begin::Input-->
                             <div>
-                                <select name="state_id" id="state" class="form-control rounded">
+                                <select name="state_id" id="state" data-element="modal_edit"
+                                    class="form-control rounded state">
                                     @foreach ($states as $state)
                                         <option value="{{ $state->id }}">{{ $state->name }}</option>
                                     @endforeach
@@ -269,30 +286,109 @@
     <!-- End Gallery Modal -->
 @endsection
 @section('scripts')
+    <script src="{{ asset('/asset/front/abzar/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('asset/back/metronic/js/customize/cities.js') }}"></script>
+
     <script>
+        @if (Session::exists('status'))
+            Swal.fire({
+                html: `{{ Session::get('status')['message'] }}`,
+                icon: @if (Session::pull('status')['status'] == 200)
+                    "success"
+                @else
+                    "error"
+                @endif ,
+                buttonsStyling: false,
+                showCancelButton: true,
+                showConfirmButton: false,
+                cancelButtonText: "باشه",
+                customClass: {
+                    cancelButton: "btn btn-primary",
+                }
+            });
+        @endif
+
+
         let token = "{{ csrf_token() }}";
         let getCitiesUrl = "{{ route('cities') }}";
-        let addresses = "{{ json_encode(Auth::user()->addresses) }}"
+        let addresses = "{{ Auth::user()->addresses }}";
+        let delete_url = "{{ route('profile.deleteAddress') }}";
+
         $('#add_address_btn').click(function() {
             $('#modal_add form').submit();
         });
+
+        $('#edit_address_btn').click(function() {
+            $('#modal_edit form').submit();
+        });
+
         $('.edit_address').click(function(para) {
             let position = $(this).attr('data-position');
             let modal = $('#modal_edit');
+            let address = JSON.parse(addresses.replace(/&quot;/g, '"'))[position];
             modal.modal('show');
-            console.log((addresses)[0]);
-            // let address = JSON.parse(addresses)[position];
-            // modal.find('#title').val(address.title);
-            // modal.find('#state_id').val(address.state_id);
-            // // modal.find('#title').val(address.city_id);
-            // modal.find('#postalCode').val(address.postalCode);
-            // modal.find('#address').val(address.address);
-            // // modal.find('#title').val();
-            // console.log(address.title);
+            modal.find('#title').val(address.title);
+            modal.find('#state option[value=' + address.state_id + ']').prop('selected', true);
+            getCities(address.city_id, 'modal_edit');
+            modal.find('#postalCode').val(address.postalCode);
+            modal.find('#address').val(address.address);
+            modal.find('input[name=position]').val(position);
         });
         $('.delete_address').click(function() {
-            // $('#modal_add').submit();
+            let title = $(this).attr('data-title');
+            let position = $(this).attr('data-position');
+            Swal.fire({
+                html: `آیا از حذف برند <span class="badge badge-primary">${title}</span> مطمئن هستید ؟`,
+                icon: "question",
+                buttonsStyling: false,
+                showCancelButton: true,
+                confirmButtonText: "بله ، حذف شود",
+                cancelButtonText: 'خیر',
+                customClass: {
+                    confirmButton: "btn btn-primary",
+                    cancelButton: 'btn btn-danger'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteAddress($(this), position);
+                }
+            });
         });
+
+        function deleteAddress(element, position) {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                type: 'post',
+                url: delete_url,
+                data: {
+                    'position': position
+                },
+                success: function(data) {
+                    console.log(data)
+                    if (data.status == 200) {
+                        element.closest('div.select-box').remove();
+                        Swal.fire({
+                            text: data.message,
+                            icon: 'success',
+                            confirmButtonText: "باشه"
+                        })
+                    } else
+                        Swal.fire({
+                            text: data.message,
+                            icon: 'error',
+                            confirmButtonText: "باشه"
+                        })
+                },
+                error: function() {
+                    Swal.fire({
+                        text: 'خطا در حذف رکورد ، مجددا تلاش کنید.',
+                        icon: 'error',
+                        confirmButtonText: "باشه"
+                    })
+                }
+            });
+        }
     </script>
-    <script src="{{ asset('asset/back/metronic/js/customize/cities.js') }}"></script>
 @endsection

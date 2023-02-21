@@ -30,7 +30,7 @@ use App\Http\Controllers\Web\Front\SearchController;
 */
 
 Route::get('/a', function () {
-    var_dump(file_exists(public_path("image\categories\2.png")));
+    return request()->url();
 });
 
 Auth::routes();
@@ -78,4 +78,5 @@ Route::post('/ajax/search' , [SearchController::class , 'searchAjax'])->name('se
 Route::get('/about' , [HomeController::class , 'aboutUs'])->name('about');
 Route::get('/profile/index', [ProfileController::class, 'index'])->middleware(['auth'])->name('profile');
 Route::get('/profile/address', [ProfileController::class, 'addresses'])->middleware(['auth'])->name('profile.addresses');
-Route::get('/profile/address/update', [ProfileController::class, 'updateAddress'])->middleware(['auth'])->name('profile.updateAddress');
+Route::post('/profile/address/update', [ProfileController::class, 'updateAddress'])->middleware(['auth'])->name('profile.updateAddress');
+Route::post('/profile/address/delete', [ProfileController::class, 'deleteAddress'])->middleware(['auth'])->name('profile.deleteAddress');

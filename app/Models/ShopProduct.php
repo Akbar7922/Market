@@ -102,6 +102,10 @@ class ShopProduct extends Model
         return $this->hasMany(ShopProductProperty::class);
     }
 
+    public function unit(){
+        return $this->belongsTo(Unit::class);
+    }
+
     public function type()
     {
         if ($this->isProduct)
