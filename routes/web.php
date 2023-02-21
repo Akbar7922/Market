@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Web\Front\ProfileController;
 use App\Http\Controllers\Web\Backend\CategoryController;
 use App\Http\Controllers\Web\Backend\BrandController;
 use App\Http\Controllers\Web\Backend\ShopProductController;
@@ -42,6 +43,7 @@ Route::prefix('ajax')->group(function () {
     Route::post('/user/cart/delete', [CartController::class, 'deleteFromCart'])->name('deleteFromCart');
     Route::post('/main/products/search', [\App\Http\Controllers\Web\Front\ShopProductController::class, 'productsFromSerach'])->name('productsMainSearch');
     Route::post('/product/favorite/add', [FavoriteController::class, 'addProductToFavorites'])->name('addProductToFavorites');
+    Route::post('/profile/address/add' , [ProfileController::class , 'addAddress'])->name('profile.addAddress');
 });
 // Route For Admin Panel
 Route::middleware(['auth' , 'admin'])->group(function () {
@@ -74,3 +76,6 @@ Route::get('/callback' , [OrderController::class , 'callback'])->name('callback'
 Route::get('/search' , [SearchController::class , 'index'])->name('search');
 Route::post('/ajax/search' , [SearchController::class , 'searchAjax'])->name('search_ajax');
 Route::get('/about' , [HomeController::class , 'aboutUs'])->name('about');
+Route::get('/profile/index', [ProfileController::class, 'index'])->middleware(['auth'])->name('profile');
+Route::get('/profile/address', [ProfileController::class, 'addresses'])->middleware(['auth'])->name('profile.addresses');
+Route::get('/profile/address/update', [ProfileController::class, 'updateAddress'])->middleware(['auth'])->name('profile.updateAddress');

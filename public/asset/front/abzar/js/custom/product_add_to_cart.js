@@ -39,7 +39,17 @@ $('.product_add_to_cart').click(function () {
     else
         notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
 });
-
+$('.product_add_to_fav').click(function(){
+    $(this).find('i').css('display', 'none');
+    $(this).find('span').css('display', 'inline-block');
+    if (isLogin)
+        addToFavorites($(this), true);
+    else {
+        notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
+        $(this).find('i').css('display', 'inline-block');
+        $(this).find('span').css('display', 'none');
+    }
+});
 function addToCart(element, count, is_product_page) {
     $.ajax({
         headers: {

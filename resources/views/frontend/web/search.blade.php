@@ -332,5 +332,6 @@
         @endif
     </script>
     <script id="script" src="{{asset('/asset/front/abzar/js/custom/product_list_script.js')}}"></script>
+    <script id="script" src="{{asset('/asset/front/abzar/js/custom/search.js')}}"></script>
 
 @endsection

@@ -1,66 +1,99 @@
-let isPost = false;
-$(window).on('load', function() {
-    $('button#submit_search').click();
-});
-$('.product_add_to_cart').click(function () {
-    if (isLogin) {
-        if ($(this).attr('data-in-basket') == 1)
-            window.location = cart_url;
-        else
-            addToCart($(this), 1, false);
-    } else
-        notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
+
+$('button#submit_search').add('button#search_btn').click(function () {
+    $('#progressModal').modal('show');
+    isPost = true;
+    let word = $('input#search_word').val();
+    let categoris = [];
+    let brands = [];
+    if (category != 0)
+        categoris.push(category);
+    if (brand != 0)
+        brands.push(brand);
+    $('input[name=category]:checked').each(function () {
+        categoris.push($(this).val());
+    });
+    $('input[name=brand]:checked').each(function () {
+        brands.push($(this).val());
+    });
+    search(categoris, brands, word.trim(),search_url,1);
 });
 
-$('.product_add_to_fav').click(function(){
-    $(this).find('i').css('display', 'none');
-    $(this).find('span').css('display', 'inline-block');
-    if (isLogin)
-        addToFavorites($(this), true);
-    else {
-        notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
-        $(this).find('i').css('display', 'inline-block');
-        $(this).find('span').css('display', 'none');
-    }
+$('#pagination a').on('click', function (e) {
+    e.preventDefault();
+    $('#progressModal').modal('show');
+    // let url = $(this).attr('href');
+    let page = $(this).text();
+    categoris = [];
+    brands = [];
+    let word = $('input#search_word').val();
+    $('input[name=category]:checked').each(function () {
+        categoris.push($(this).val());
+    });
+    $('input[name=brand]:checked').each(function () {
+        brands.push($(this).val());
+    });
+    search(categoris, brands, word.trim() , search_url , page);
 });
 
-function addToCart(element, count, is_product_page) {
+function search(categories, brands, word, url , page) {
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': token
         },
         type: 'post',
-        url: addToCartUrl,
+        url: url,
         data: {
-            'shop_product_id': element.attr('data-id'),
-            'count': count
+            'page':page,
+            'categories': categories,
+            'brands': brands,
+            'word': word,
         },
         success: function (data) {
-            console.log(data);
-            if (data.status == 200) {
-                notify("fa-check", "سبدخرید", data.message, "success", 5000, false);
-                element.text('مشاهده سبدخرید');
-                element.attr('data-in-basket', 1);
-                // if ($('span#cart_buttons').hasChildNodes() <= 1)
-                /*$('span#cart_buttons').append(`<a href="${cart_url}" id="show_cart"
-                                       class="btn btn-solid hover-solid btn-animation btn-rounded">
-                                        <span class="indicator-label">مشاهده سبد</span>
-                                    </a>`);*/
-            } else
-                notify("fa-check", "سبدخرید", data.message, "danger", 5000, false);
-            if (is_product_page) {
-                element.find('.indicator-label').css('display', 'inline-block');
-                element.find('.indicator-progress').css('display', 'none');
-            }
+            showToast(false);
+            $('#progressModal').modal("hide");
+            $('div#product_partial').children().remove();
+            $('div#product_partial').append(data);
         },
         error: function (e) {
-            console.log(e);
-            if (is_product_page) {
-                element.find('.indicator-label').css('display', 'inline-block');
-                element.find('.indicator-progress').css('display', 'none');
-            }
+            $('#progressModal').modal("hide");
+            showToast(true);
         }
     });
+}
+
+function search_paginate(url) {
+    $('#progressModal').modal("hide");
+    // $('div#product_partial').children().remove();
+    $('div#product_partial').load(url + " div#product_partial");
+    $('script#script').load(url + " #script");
+}
+
+function showToast(isError) {
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+
+    if (isError) {
+        let body = "<span style='text-align: right;direction: rtl'> جستجو باخطا مواجه شد ، مجددا تلاش کنید </span>";
+        toastr.error(body, 'جستجو');
+    } else {
+        let body = "<span style='text-align: right;direction: rtl'> جستجو باموفقیت انجام شد </span>";
+        toastr.success(body, 'جستجو');
+    }
 }
 
 function addToFavorites(element, is_product_page) {

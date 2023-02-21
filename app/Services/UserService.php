@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Services\CityService;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 
@@ -36,6 +37,51 @@ class UserService
 
     public function find($user_id){
         return User::findOrFail($user_id);
+    }
+
+    public function deleteAddress($user , $request)
+    {
+        $position = $request->position;
+        $address = json_decode($user->addresses, true);
+        unset($address[$position]);
+        return $this->updateAddress($user->id, json_encode($address));
+    }
+
+    public function addAddress($user, $request)
+    {
+        $cityService = new CityService();
+        $data = [
+            'title' => $request->title,
+            'city_id' => $request->city_id,
+            'city' => $cityService->getName($request->city_id),
+            'state_id' => $request->state_id,
+            'state' => $cityService->getName($request->state_id),
+            'postalCode' => $request->postalCode,
+            'address' => $request->address,
+            'isSelect' => 0,
+        ];
+
+        $address = json_decode($user->addresses, true);
+        $address[] = $data;
+        return $this->updateAddress($user->id, json_encode($address));
+    }
+
+    public function updateUserAddress($user, $request)
+    {
+        $data = [
+            'title' => $request->title,
+            'city_id' => $request->city_id,
+            'city' => trim($request->city),
+            'state_id' => $request->state_id,
+            'state' => trim($request->state),
+            'postalCode' => $request->postalCode,
+            'address' => $request->address,
+            'isSelect' => 0,
+        ];
+
+        $address = json_decode($user->addresses, true);
+        $address[$request->position] = $data;
+        return $this->updateAddress($user->id, json_encode($address));
     }
 
     public function updateAddress($user_id , $address){

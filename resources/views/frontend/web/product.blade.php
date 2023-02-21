@@ -309,8 +309,12 @@
                                         </a>
                                     </div>
                                     <div class="cart-info cart-wrap">
-                                        <a title="اضافه کردن به علاقه مندی"><i
-                                                class="fa fa-heart"></i></a>
+                                        <a title="اضافه کردن به علاقه مندی" class="product_add_to_fav" data-id="{{ $product->id }}">
+                                            <i class="fa fa-heart"></i>
+                                            <span
+                                            class="spinner-border spinner-border-sm align-middle"
+                                            style="display: none;"></span>
+                                        </a>
                                         <button type="button" data-id="{{$product->id}}" title="اضافه کردن به سبد"
                                                 class="product_add_to_cart"><i
                                                 class="ti-shopping-cart "></i>
@@ -373,7 +377,7 @@
                                     </div>
                                     <div class="cart-info cart-wrap">
                                         <a title="اضافه کردن به علاقه مندی"><i
-                                                class="fa fa-heart-o"></i></a>
+                                            class="fa fa-heart product_add_to_fav" data-id="{{ $product->id }}"></i></a>
                                         <button type="button" data-id="{{$product->id}}" title="اضافه کردن به سبد"
                                                 class="product_add_to_cart"><i
                                                 class="ti-shopping-cart "></i>
