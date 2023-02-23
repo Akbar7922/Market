@@ -98,6 +98,20 @@
         .btn-outline-success {
             background-color: #ffffffb5;
         }
+        .onhover-show-div li {
+            padding-left: 20px !important;
+            padding-right: 0 !important;
+        }
+
+        .onhover-show-div li:hover{
+            border: none;
+            border-bottom: 1px solid var(--theme-color);
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+        .onhover-dropdown{
+            min-width: 190px;
+        }
     </style>
 
 </head>
@@ -120,12 +134,22 @@
                     </div>
                     <div class="col-lg-6 text-end">
                         @if (Auth::check())
-                            <button class="btn" style="margin-top: 3px;">
-                                <a href="{{ route('cart.index') }}" style="color: white;">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    مشاهده سبد خرید
-                                </a>
-                            </button>
+                            <ul class="header-dropdown">
+                                <li class="onhover-dropdown">
+                                    <i class="fa fa-user"></i>
+                                    {{ 'سلام ' . Auth::user()->name . ' عزیز !' }}
+                                    <ul class="onhover-show-div">
+                                        <li>
+                                            <i class="fa fa-shopping-cart"></i>
+                                            <a href="{{ route('cart.index') }}">سبدخرید</a>
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-dashboard"></i>
+                                            <a href="{{ route('profile') }}">مدیریت حساب</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         @else
                             <ul class="header-dropdown">
                                 <li class="onhover-dropdown mobile-account">

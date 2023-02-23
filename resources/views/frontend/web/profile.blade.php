@@ -17,27 +17,27 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="counter-box">
-                    <img src="../assets/images/icon/dashboard/sale.png" class="img-fluid">
+                    <img src="{{ asset('asset/front/abzar/images/icon/dashboard/sale.png') }}" class="img-fluid">
                     <div>
-                        <h3>25</h3>
+                        <h3>{{ Auth::user()->orders()->count() }}</h3>
                         <h5>کل سفارش</h5>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="counter-box">
-                    <img src="../assets/images/icon/dashboard/homework.png" class="img-fluid">
+                    <img src="{{ asset('asset/front/abzar/images/icon/dashboard/homework.png') }}" class="img-fluid">
                     <div>
-                        <h3>5</h3>
-                        <h5>درحال انتظار</h5>
+                        <h3>{{ Auth::user()->orders()->whereIn('status_id' , [1,2])->count() }}</h3>
+                        <h5>سفارشات پرداخت نشده</h5>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="counter-box">
-                    <img src="../assets/images/icon/dashboard/order.png" class="img-fluid">
+                    <img src="{{ asset('asset/front/abzar/images/icon/dashboard/order.png') }}" class="img-fluid">
                     <div>
-                        <h3>50</h3>
+                        <h3>{{ Auth::user()->favorites()->count() }}</h3>
                         <h5>علاقه مندی</h5>
                     </div>
                 </div>
