@@ -40395,3 +40395,9 @@ div.rating{
     color: black !important;
     text-align: justify;
 }
+.order_details_item {
+    padding: 5px;
+}
+li.fa{
+    vertical-align: middle;
+}

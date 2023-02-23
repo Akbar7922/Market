@@ -80,3 +80,7 @@ Route::get('/profile/index', [ProfileController::class, 'index'])->middleware(['
 Route::get('/profile/address', [ProfileController::class, 'addresses'])->middleware(['auth'])->name('profile.addresses');
 Route::post('/profile/address/update', [ProfileController::class, 'updateAddress'])->middleware(['auth'])->name('profile.updateAddress');
 Route::post('/profile/address/delete', [ProfileController::class, 'deleteAddress'])->middleware(['auth'])->name('profile.deleteAddress');
+Route::get('/profile/orders', [ProfileController::class, 'orders'])->middleware(['auth'])->name('profile.orders');
+Route::get('/profile/favorites', [ProfileController::class, 'favorites'])->middleware(['auth'])->name('profile.favorites');
+Route::post('/ajax/order/products', [OrderController::class, 'getProductsOfOrder'])->middleware(['auth'])->name('order.details');
+Route::post('/profile/avatar/upload', [ProfileController::class, 'updateAvatar'])->middleware(['auth'])->name('profile.updateAvatar');

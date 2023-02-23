@@ -289,6 +289,7 @@
 
 <!-- Theme js-->
 <script src="{{asset('/asset/front/abzar/js/script.js')}}"></script>
+<script>let add_product_favorite_url = "{{route('addProductToFavorites')}}";</script>
 
 @yield('scripts')
 

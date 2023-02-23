@@ -133,6 +133,10 @@ class User extends Authenticatable
         return $this->hasMany(GroupMember::class)
             ->where('isDel' , 0);
     }
+    public function favorites(){
+        return $this->hasMany(Favorite::class)
+            ->where('entity_type' , 0);
+    }
 
     public function getGender(): string
     {
@@ -164,6 +168,9 @@ class User extends Authenticatable
 
     public function carts(){
         return $this->hasMany(Cart::class);
+    }
+    public function orders(){
+        return $this->hasMany(Order::class);
     }
     public function activation() : string
     {

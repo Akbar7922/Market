@@ -76,36 +76,50 @@ class Order extends Model
         'latitude',
         'longitude',
         'status_id',
-        'payment_status' ,
+        'payment_status',
         'isActive',
         'register_user_id',
         'description',
         'city_id',
-        'transaction_id' ,
-        'installments'
+        'transaction_id',
+        'installments',
+        'created_at',
     ];
+    protected $timestamp = true;
 
-    public function shopOrder(){
-        return $this->hasMany(ShopOrder::class , 'order_id');
+    public function shopOrder()
+    {
+        return $this->hasMany(ShopOrder::class, 'order_id');
     }
 
-    public function payType(){
+    public function payType()
+    {
         return $this->belongsTo(PayType::class);
     }
-    public function sendType(){
+    public function sendType()
+    {
         return $this->belongsTo(SendType::class);
     }
-    public function city(){
+    public function city()
+    {
         return $this->belongsTo(City::class);
     }
-    public function status(){
+    public function status()
+    {
         return $this->belongsTo(OrderStatus::class);
     }
-    public function transaction(){
+    public function transaction()
+    {
         return $this->belongsTo(Transaction::class);
     }
 
-    public function created_at(){
-        return verta($this->created_at , 'Asia/Tehran')->formatJalaliDatetime();
+    public function created_at()
+    {
+        return verta($this->created_at, 'Asia/Tehran');
     }
+    public function getCreatedAtAttribute()
+    {
+        return verta($this->attributes['created_at'] , 'Asia/Tehran')->formatJalaliDatetime();
+    }
+
 }

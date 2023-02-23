@@ -103,4 +103,12 @@ class UserService
         }
     }
 
+    public function updateAvatar($user_id , $avatar){
+        try {
+            User::where('id' , $user_id)->update(['pic' => $avatar]);
+            return true;
+        }catch (QueryException $exception){
+            return false;
+        }
+    }
 }

@@ -315,4 +315,8 @@ class OrderController extends Controller
         $num4 = rand(0, 9);
         return $num1 . $num2 . $num3 . $num4;
     }
+
+    public function getProductsOfOrder(Request $request){
+        return $this->orderService->getOrderDetails($request->trackingCode);
+    }
 }

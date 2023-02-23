@@ -34,12 +34,34 @@ $('#product_add_to_favorite').click(function () {
 });
 
 $('.product_add_to_cart').click(function () {
-    if (isLogin)
-        addToCart($(this), 1, false);
-    else
-        notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
+    $(this).find('i').css('display', 'none');
+    $(this).find('span').css('display', 'inline-block');
+    let inCart = $(this).attr('data-inCart');
+    if (typeof inCart !== 'undefined' && inCart !== false) {
+        if (inCart == 1) {
+            $(this).find('i').css('display', 'inline-block');
+            $(this).find('span').css('display', 'none');
+            window.location = cart_url;
+        } else if (inCart == 0) {
+            if (isLogin)
+                addToCart($(this), 1, false);
+            else{
+                $(this).find('i').css('display', 'inline-block');
+                $(this).find('span').css('display', 'none');
+                notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
+            }
+        }
+    } else {
+        if (isLogin)
+            addToCart($(this), 1, false);
+        else{
+            $(this).find('i').css('display', 'inline-block');
+            $(this).find('span').css('display', 'none');
+            notify("fa-check", "لطفا وارد شوید", "درحال ارجاع به صفحه ورود .....", "danger", 2000, true);
+        }
+    }
 });
-$('.product_add_to_fav').click(function(){
+$('.product_add_to_fav').click(function () {
     $(this).find('i').css('display', 'none');
     $(this).find('span').css('display', 'inline-block');
     if (isLogin)
@@ -51,6 +73,7 @@ $('.product_add_to_fav').click(function(){
     }
 });
 function addToCart(element, count, is_product_page) {
+    let isDash = element.attr('data-dash');
     $.ajax({
         headers: {
             'X-CSRF-TOKEN': token
@@ -65,12 +88,20 @@ function addToCart(element, count, is_product_page) {
             console.log(data);
             if (data.status == 200) {
                 notify("fa-check", "سبدخرید", data.message, "success", 5000, false);
-                element.remove();
-                if ($('span#cart_buttons').hasChildNodes() <= 1)
-                    $('span#cart_buttons').append(`<a href="${cart_url}" id="show_cart"
+                if (typeof isDash !== 'undefined' && isDash !== false) {
+                    element.find('i').css('display', 'inline-block');
+                    element.find('span').css('display', 'none');
+                    element.find('i').removeClass('fa-cart-plus');
+                    element.find('i').addClass('fa-shopping-cart');
+                    element.attr('data-inCart', 1);
+                } else {
+                    element.remove();
+                    if ($('span#cart_buttons').hasChildNodes() <= 1)
+                        $('span#cart_buttons').append(`<a href="${cart_url}" id="show_cart"
                                            class="btn btn-solid hover-solid btn-animation btn-rounded">
                                             <span class="indicator-label">مشاهده سبد</span>
                                         </a>`);
+                }
             } else
                 notify("fa-check", "سبدخرید", data.message, "danger", 5000, false);
             if (is_product_page) {
