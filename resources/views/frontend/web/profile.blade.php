@@ -9,6 +9,9 @@
 @section('title')
     پروفایل
 @endsection
+@section('breadcrumb')
+<li class="breadcrumb-item active" aria-current="page">داشبورد</li>
+@endsection
 @section('content')
     <div class="counter-section">
         <div class="welcome-msg">

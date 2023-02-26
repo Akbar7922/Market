@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Web\Front\ProfileController;
 use App\Http\Controllers\Web\Backend\CategoryController;
@@ -35,8 +36,12 @@ Route::get('/a', function () {
 
 Auth::routes();
 Route::post('/user/register', [SignController::class, 'register'])->name('userRegister');
+Route::post('/user/password/forget', [SignController::class, 'reserPassword'])->name('reset.password');
+Route::get('/login/code', [SignController::class, 'loginCodeForm'])->name('login.code');
+Route::post('/login/code', [SignController::class, 'loginCode'])->name('login.code');
 Route::prefix('ajax')->group(function () {
     Route::post('/code/send', [SignController::class, 'sendCode'])->name('sendCode');
+    Route::post('/forget/code/send', [SignController::class, 'forget_sendCode'])->name('forget.sendCode');
     Route::post('/code/validate', [SignController::class, 'validateCode'])->name('validateCode');
     Route::post('/state/cities', [CityController::class, 'getCities'])->name('cities');
     Route::post('/user/cart/add', [CartController::class, 'addToCart'])->name('addToCart');
@@ -82,5 +87,9 @@ Route::post('/profile/address/update', [ProfileController::class, 'updateAddress
 Route::post('/profile/address/delete', [ProfileController::class, 'deleteAddress'])->middleware(['auth'])->name('profile.deleteAddress');
 Route::get('/profile/orders', [ProfileController::class, 'orders'])->middleware(['auth'])->name('profile.orders');
 Route::get('/profile/favorites', [ProfileController::class, 'favorites'])->middleware(['auth'])->name('profile.favorites');
-Route::post('/ajax/order/products', [OrderController::class, 'getProductsOfOrder'])->middleware(['auth'])->name('order.details');
+Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->middleware(['auth'])->name('profile.edit');
+Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->middleware(['auth'])->name('profile.updateProfile');
+Route::post('/profile/password/update', [ProfileController::class, 'updatePassword'])->middleware(['auth'])->name('profile.updatePassword');
 Route::post('/profile/avatar/upload', [ProfileController::class, 'updateAvatar'])->middleware(['auth'])->name('profile.updateAvatar');
+Route::post('/ajax/order/products', [OrderController::class, 'getPr.oductsOfOrder'])->middleware(['auth'])->name('order.details');
+Route::get('/forget', [LoginController::class , 'forgetPassword'])->name('password.forget');

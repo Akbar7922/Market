@@ -141,12 +141,15 @@
                                                        id="customControlAutosizing">
                                                 <label class="form-check-label ps-2" for="customControlAutosizing">به
                                                     خاطر سپردن</label>
-                                                <a href="javascript:void(0)" class="btn btn-default forgot-pass">فراموشی
+                                                <a href="{{ route('password.forget') }}" class="btn btn-default forgot-pass">فراموشی
                                                     رمزعبور!</a>
                                             </div>
                                         </div>
                                         <div class="form-button">
                                             <button id="loginBtn" class="btn btn-primary" type="button">ورود</button>
+                                            <a href="{{ route('login.code') }}">
+                                                <button id="loginCodeBtn" class="btn btn-primary" type="button">ورود با رمز یکبارمصرف</button>
+                                            </a>
                                         </div>
                                         <div class="form-footer">
                                             <span>یا با سیستم عامل های اجتماعی وارد شوید</span>

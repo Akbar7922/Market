@@ -55,6 +55,7 @@ $('#activationDiv input').keyup(function (e) {
 
 $('#registerBtn').add('#validateCode').click(function () {
     getCode();
+    let isLoginCode = $(this).attr('data-login');
     let code = $('input[name=code]').val();
     let url = $(this).attr('data-link');
     $.ajax({
@@ -63,13 +64,16 @@ $('#registerBtn').add('#validateCode').click(function () {
         },
         type: 'post',
         url: url,
-        data: {'code': code},
+        data: { 'code': code },
         success: function (data) {
-            console.log(data)
             if (data.status == 200) {
-                $('#signModal').modal('show');
-                if (typeof (isAdmin) != 'undefined')
-                    $('#user_create_inputs').fadeIn(500);
+                if(typeof isLoginCode != 'undefined' && isLoginCode == 1){
+                    $('#loginCodeForm').submit();
+                } else {
+                    $('#signModal').modal('show');
+                    if (typeof (isAdmin) != 'undefined')
+                        $('#user_create_inputs').fadeIn(500);
+                }
             } else
                 wrongCode();
         },
@@ -106,7 +110,6 @@ $('#sendCode').click(function () {
                 'mobile': mobile
             },
             success: function (data) {
-                console.log(data);
                 if (data.status === 200) {
                     for (let i = 1; i <= 4; i++)
                         $('#' + i).prop("disabled", false);
@@ -153,7 +156,7 @@ function validateModal() {
 
 function setTimer() {
     let fiveSeconds = new Date().getTime() + 60000;
-    $('#timer').countdown(fiveSeconds, {elapse: true})
+    $('#timer').countdown(fiveSeconds, { elapse: true })
         .on('update.countdown', function (event) {
             let $this = $(this);
             if (event.elapsed) {

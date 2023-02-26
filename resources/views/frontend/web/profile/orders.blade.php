@@ -9,6 +9,10 @@
 @section('title')
     پروفایل | سفارشات
 @endsection
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('profile') }}">داشبورد</a></li>
+<li class="breadcrumb-item active" aria-current="page">تاریخچه سفارشات</li>
+@endsection
 @section('content')
     <div class="row">
         <div class="col-12">

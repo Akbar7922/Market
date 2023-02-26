@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Services\CityService;
 use App\Models\User;
+use Hash;
 use Illuminate\Database\QueryException;
 
 class UserService
@@ -27,6 +28,15 @@ class UserService
         }
     }
 
+    public function resetPassword($mobile , $password){
+        try {
+            User::where('mobile' , $mobile)->update(['password' => Hash::make($password)]);
+            return true;
+        }catch (QueryException $exception){
+            return false;
+        }
+    }
+
     public function checkExistsMobile($mobile) {
         return User::where('mobile' , $mobile)->exists();
     }
@@ -37,6 +47,9 @@ class UserService
 
     public function find($user_id){
         return User::findOrFail($user_id);
+    }
+    public function findWithMobile($mobile){
+        return User::where('mobile', $mobile)->first();
     }
 
     public function deleteAddress($user , $request)

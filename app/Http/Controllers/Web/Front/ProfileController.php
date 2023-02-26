@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Web\Front;
 use App\Http\Controllers\Controller;
 use App\Services\CategoryService;
 use App\Services\CityService;
-use App\Services\FavoriteService;
 use App\Services\OrderService;
-use App\Services\ShopProductService;
 use App\Services\UserService;
 use Auth;
+use Hash;
 use Illuminate\Http\Request;
+use Validator;
 
 class ProfileController extends Controller
 {
@@ -49,10 +49,65 @@ class ProfileController extends Controller
     public function favorites()
     {
         $categoryService = new CategoryService();
-        $favoritesService = new FavoriteService();
         $categories = $categoryService->mainCategories();
-        $products = $favoritesService->getUserFavorites(Auth::id());
         return view('frontend.web.profile.favorites', compact(['categories']));
+    }
+
+    public function editProfile()
+    {
+        $categoryService = new CategoryService();
+        $cityService = new CityService();
+        $categories = $categoryService->mainCategories();
+        $states = $cityService->getStates();
+        return view('frontend.web.profile.edit_profile', compact(['categories', 'states']));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'family' => 'required|string',
+            'city_id' => 'required|integer',
+        ]);
+        $validator->customMessages = [
+            'name' => 'نام نامعتبر است.',
+            'family' => 'نام خانوادگی نامعتبر است.',
+            'city_id' => 'شهر نامعتبر است.',
+        ];
+
+        if ($validator->errors()->count() > 0) {
+            return redirect()->back()->with('status', ['status' => 203, 'message' => $validator->errors()]);
+        }
+
+        $data = [
+            'name' => $request->name,
+            'family' => $request->family,
+            'email' => $request->email,
+            'tell' => $request->tell,
+            'city_id' => $request->city_id,
+            'isMale' => $request->gender,
+        ];
+        if ($this->userService->update(Auth::id(), $data)) {
+            return redirect()->back()->with('status', ['status' => 200, 'message' => 'اطلاعات باموفقیت ویرایش شد .']);
+        }
+
+        return redirect()->back()->with('status', ['status' => 201, 'message' => 'خطا در ویرایش اطلاعات .']);
+
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // return $request->all();.
+        if (Auth::user()->password == Hash::check($request->old_password , Auth::user()->password)) {
+            if ($request->password == $request->confirm_password) {
+                if (Auth::user()->update(['password' => Hash::make($request->password)])) {
+                    return redirect()->back()->with('status', ['status' => 200, 'message' => 'رمزعبور باموفقیت بروزرسانی شد .']);
+                }else
+                return redirect()->back()->with('status', ['status' => 201, 'message' => 'خطا در بروزرسانی رمزعبور ، مجددا تلاش کنید!']);
+            }else
+            return redirect()->back()->with('status', ['status' => 202, 'message' => 'تکرار رمزعبور صحیح نیست .']);
+        }else
+        return redirect()->back()->with('status', ['status' => 203, 'message' => 'رمزعبور قبلی نامعتبر است .']);
     }
 
     public function deleteAddress(Request $request)

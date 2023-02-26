@@ -4,18 +4,14 @@
         .modal-footer>* {
             min-height: 45px !important;
         }
-
-        .swal2-actions>button {
-            margin-right: 12px;
-            margin-left: 12px;
-            border-radius: 8px;
-            min-height: 40px;
-            min-width: 85px;
-        }
     </style>
 @endsection
 @section('title')
     پروفایل | مدیریت آدرس ها
+@endsection
+@section('breadcrumb')
+<li class="breadcrumb-item"><a href="{{ route('profile') }}">داشبورد</a></li>
+<li class="breadcrumb-item active" aria-current="page">مدیریت آدرس ها</li>
 @endsection
 @section('content')
     <div class="row">
