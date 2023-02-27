@@ -282,7 +282,6 @@
 <script src="{{asset('asset/front/abzar/js/custom/toastr.min.js')}}"></script>
 <script src="{{asset('asset/back/assets/js/sign.js')}}"></script>
 <script>
-
     $('.single-item').slick({
         arrows: false,
         dots: true,

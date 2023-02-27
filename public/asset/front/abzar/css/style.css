@@ -40586,10 +40586,30 @@ li.fa {
 .dashboard-uniqueCorner {
     border-radius: 0px 0.25rem 0.25rem 0px !important;
 }
-#edit_profile_form{
-    border-top: 1px solid rgba(0,0,0,0.125);
+
+#edit_profile_form {
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
 }
-.link{
+
+.link {
     cursor: pointer;
     text-decoration: underline;
+}
+
+.swal2-actions>button {
+    margin-right: 12px;
+    margin-left: 12px;
+    border-radius: 8px;
+    min-height: 40px;
+    min-width: 85px;
+}
+.header-custom{
+    display: inline-block;
+    width: fit-content;
+    text-align: center;
+    cursor: pointer;
+}
+.header-custom > span:hover , .header-custom > .onhover-dropdown:hover > i
+    ,.header-custom > .onhover-dropdown:hover{
+    color: #6e0c0c !important;
 }

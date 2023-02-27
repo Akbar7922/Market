@@ -5,13 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Multikart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords"
-        content="admin template, Multikart admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="description" content="Multikart admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+    <meta name="keywords" content="admin template, Multikart admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    {{--    <link rel="icon" href="{{asset('asset/back/assets/images/dashboard/favicon.png')}}" type="image/x-icon"> --}}
-    {{--    <link rel="shortcut icon" href="{{asset('asset/back/assets/images/dashboard/favicon.png')}}" type="image/x-icon"> --}}
+    {{-- <link rel="icon" href="{{asset('asset/back/assets/images/dashboard/favicon.png')}}" type="image/x-icon"> --}}
+    {{-- <link rel="shortcut icon" href="{{asset('asset/back/assets/images/dashboard/favicon.png')}}" type="image/x-icon"> --}}
     <title>ورود به بخواه</title>
 
     <!-- Google font-->
@@ -39,6 +37,7 @@
             margin: 10px 5px 5px 5px;
             border-bottom: 1px solid #ced4da;
         }
+
     </style>
 
 </head>
@@ -106,14 +105,12 @@
                                     <div class="form-group">
                                         <form id="loginCodeForm" action="{{ route('login.code') }}" method="POST">
                                             @csrf
-                                            <input required="" name="mobile" type="email" class="form-control"
-                                                placeholder="شماره موبایل" id="mobile_register">
+                                            <input required="" name="mobile" type="email" class="form-control" placeholder="شماره موبایل" id="mobile_register">
                                             <span class="error_input" id="mobileErrorRegister"></span>
                                         </form>
                                     </div>
                                     <div class="form-group">
-                                        <button id="sendCode" data-link="{{ route('forget.sendCode') }}"
-                                            class="btn btn-primary-gradien" type="button">
+                                        <button id="sendCode" data-link="{{ route('forget.sendCode') }}" class="btn btn-primary-gradien" type="button">
                                             ارسال کد اعتبارسنجی
                                         </button>
                                         <div class="code_timer">
@@ -123,23 +120,13 @@
                                     <span class="error_input" id="codeError"></span>
                                     <div id="activationDiv" class="form-terms">
                                         <input type="hidden" name="code" />
-                                        <input disabled required="" maxlength="1" id="4"
-                                            name="activationCode[]" type="text"
-                                            class="form-control activationCode_item" />
-                                        <input disabled required="" maxlength="1" id="3"
-                                            name="activationCode[]" type="text"
-                                            class="form-control activationCode_item" />
-                                        <input disabled required="" maxlength="1" id="2"
-                                            name="activationCode[]" type="text"
-                                            class="form-control activationCode_item" />
-                                        <input disabled required="" maxlength="1" id="1"
-                                            name="activationCode[]" type="text"
-                                            class="form-control activationCode_item" />
+                                        <input disabled required="" maxlength="1" id="4" name="activationCode[]" type="text" class="form-control activationCode_item" />
+                                        <input disabled required="" maxlength="1" id="3" name="activationCode[]" type="text" class="form-control activationCode_item" />
+                                        <input disabled required="" maxlength="1" id="2" name="activationCode[]" type="text" class="form-control activationCode_item" />
+                                        <input disabled required="" maxlength="1" id="1" name="activationCode[]" type="text" class="form-control activationCode_item" />
                                     </div>
                                     <div class="form-button">
-                                        <button data-login="1" id="registerBtn"
-                                            data-link="{{ route('validateCode') }}" class="btn btn-primary"
-                                            type="button">ورود
+                                        <button data-login="1" id="registerBtn" data-link="{{ route('validateCode') }}" class="btn btn-primary" type="button">ورود
                                         </button>
                                         @csrf
                                     </div>
@@ -157,8 +144,7 @@
                         </div>
                     </div>
                 </div>
-                <a id="homeBtn" href="{{ route('home') }}" class="btn btn-primary back-btn"><i
-                        data-feather="arrow-right"></i>برگشت</a>
+                <a id="homeBtn" href="{{ route('home') }}" class="btn btn-primary back-btn"><i data-feather="arrow-right"></i>برگشت</a>
             </div>
         </div>
     </div>
@@ -186,48 +172,17 @@
     <!--  Script for ME  -->
     <script src="{{ asset('asset/front/assets/js/countdown/jquery.countdown.js') }}"></script>
     <script src="{{ asset('asset/front/abzar/js/custom/toastr.min.js') }}"></script>
-    <script>let isLoginCode = 1;</script>
+    <script> let isLoginCode = 1; </script>
     <script src="{{ asset('asset/back/assets/js/sign.js') }}"></script>
+    <script src="{{ asset('asset/front/abzar/js/custom/login.code.js') }}"></script>
+
     <script>
-        $('#reset_submit').click(function() {
-            $('#forgetForm').find('.error_input').fadeOut(500);
-            let password = $('#password');
-            let confirm_password = $('#confirm_password');
-            let validate = true;
-            if (!password.val()) {
-                $('#passwordError').fadeIn(200);
-                $('#passwordError').text('* رمزعبور اجباری است ');
-                validate = false;
-            } else if (password.val().length < 6) {
-                $('#passwordError').fadeIn(200);
-                $('#passwordError').text('* رمزعبور حداقل باید 6 کاراکتر باشد ');
-                validate = false;
-            }
-            if (!confirm_password.val()) {
-                $('#confirm_passwordError').fadeIn(200);
-                $('#confirm_passwordError').text('* تکرار رمزعبور اجباری است ');
-                validate = false;
-            }
-            if (validate) {
-                if (password.val() != confirm_password.val()) {
-                    $('#confirm_passwordError').fadeIn(200);
-                    $('#confirm_passwordError').text('* تکرار رمزعبور صحیح نیست ');
-                    validate = false;
-                } else {
-                    $('#mobile_modal').val($('#mobile_register').val());
-                    $('#forgetForm').submit();
-                }
-            }
-        });
-
         $('.single-item').slick({
-            arrows: false,
-            dots: true,
-            rtl: true
+            arrows: false
+            , dots: true
+            , rtl: true
         });
-        $(document).ready(function() {
 
-        });
     </script>
 
 </body>

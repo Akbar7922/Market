@@ -10,62 +10,25 @@
     <meta name="author" content="multikart">
     <link rel="icon" href="{{ asset('/asset/front/abzar/images/favicon/1.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('/asset/front/abzar/images/favicon/1.png') }}" type="image/x-icon">
+
     <title>
         @yield('title')
     </title>
-
-    <!--Google font-->
-
-
     <!-- Icons -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/vendors/font-awesome.css') }}">
-
     <!--Slick slider css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/vendors/slick.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/vendors/slick-theme.css') }}">
-
     <!-- Animate icon -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/vendors/animate.css') }}">
-
     <!-- Themify icon -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/vendors/themify-icons.css') }}">
-
     <!-- Bootstrap css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/vendors/bootstrap.css') }}">
-
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('/asset/front/abzar/css/style.css') }}">
-
-    <style>
-        .link-section>li>a {
-            color: white !important;
-        }
-
-        .mega-menu .full-mega-menu .sm-nowrap {
-            background-color: #FF5722;
-            border-radius: 10px;
-            color: white !important;
-        }
-
-        .footer-contant {
-            color: white;
-        }
-
-        .onhover-show-div li {
-            padding-left: 20px !important;
-            padding-right: 0 !important;
-        }
-
-        .onhover-show-div li:hover{
-            border: none;
-            border-bottom: 1px solid var(--theme-color);
-            border-radius: 0;
-            transition: all 0.2s ease;
-        }
-        .onhover-dropdown{
-            min-width: 190px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('asset/front/abzar/css/sweetalert2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('asset/front/abzar/css/main.css') }}">
 
 </head>
 
@@ -80,14 +43,21 @@
                     <div class="col-lg-6">
                         <div class="header-contact">
                             <ul>
-                                <li>به سامانه بخواه مارکت خوش آمدید</li>
+                                <li>به بخواه مارکت خوش آمدید</li>
                                 <li><i class="fa fa-phone"></i>شماره تماس : 0656-740-0915</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-6 text-end">
                         @if (Auth::check())
-                            <ul class="header-dropdown">
+                        <div>
+                            <div class="header-dropdown header-custom">
+                                <span style="color: white">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    سبد خرید
+                                </span>
+                            </div>
+                            <ul class="header-dropdown header-custom">
                                 <li class="onhover-dropdown">
                                     <i class="fa fa-user"></i>
                                     {{ 'سلام ' . Auth::user()->name . ' عزیز !' }}
@@ -100,18 +70,27 @@
                                             <i class="fa fa-dashboard"></i>
                                             <a href="{{ route('profile') }}">مدیریت حساب</a>
                                         </li>
+                                        <li id="closeBtn">
+                                            <i class="fa fa-close"></i>
+                                            <a>خروج</a>
+                                            <form id="logoutForm" action="{{ route('logout') }}" method="post">
+                                                @csrf
+                                            </form>
+                                        </li>
+
                                     </ul>
                                 </li>
                             </ul>
+                        </div>
                         @else
-                            <ul class="header-dropdown">
-                                <li class="onhover-dropdown mobile-account">
-                                    <i class="fa fa-user"></i> حساب کاربری
-                                    <ul class="onhover-show-div">
-                                        <li><a href="{{ route('login') }}">ورود / ثبت نام</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <ul class="header-dropdown">
+                            <li class="onhover-dropdown mobile-account">
+                                <i class="fa fa-user"></i> حساب کاربری
+                                <ul class="onhover-show-div">
+                                    <li><a href="{{ route('login') }}">ورود / ثبت نام</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                         @endif
                     </div>
                 </div>
@@ -128,8 +107,7 @@
                                         <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
                                         <ul id="main-menu" class="sm pixelstrap sm-horizontal">
                                             <li>
-                                                <div class="mobile-back text-end">برگشت<i
-                                                        class="fa fa-angle-right ps-2"></i></div>
+                                                <div class="mobile-back text-end">برگشت<i class="fa fa-angle-right ps-2"></i></div>
                                             </li>
                                             <li><a href="{{ route('home') }}">خانه</a></li>
                                             <li class="mega" id="hover-cls">
@@ -140,25 +118,24 @@
                                                         <div class="container">
                                                             <div class="row">
                                                                 @foreach ($categories as $category)
-                                                                    <div class="col mega-box">
-                                                                        <div class="link-section">
-                                                                            <div class="menu-title">
-                                                                                <h5>{{ $category->name }}</h5>
-                                                                            </div>
-                                                                            @if ($category->children)
-                                                                                @foreach ($category->children as $children)
-                                                                                    <div class="menu-content">
-                                                                                        <ul>
-                                                                                            <li>
-                                                                                                <a
-                                                                                                    href="{{ route('search', ['category' => $children->id]) }}">{{ $children->name }}</a>
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                @endforeach
-                                                                            @endif
+                                                                <div class="col mega-box">
+                                                                    <div class="link-section">
+                                                                        <div class="menu-title">
+                                                                            <h5>{{ $category->name }}</h5>
                                                                         </div>
+                                                                        @if ($category->children)
+                                                                        @foreach ($category->children as $children)
+                                                                        <div class="menu-content">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a href="{{ route('search', ['category' => $children->id]) }}">{{ $children->name }}</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        @endforeach
+                                                                        @endif
                                                                     </div>
+                                                                </div>
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -196,9 +173,9 @@
                             <p>بخواه مارکت ، سامانه آنلاین خرید موادغذایی و مواد خوراکی با قیمتی مناسب و روش های پرداخت
                                 متنوع</p>
                             <p style="text-align: center;margin-top: 0.5rem">
-                            <h4>
-                                * هایپرمارکت را به خانه خود بیاورید *
-                            </h4>
+                                <h4>
+                                    * هایپرمارکت را به خانه خود بیاورید *
+                                </h4>
                             </p>
                             <div class="footer-social">
                                 <ul>
@@ -317,8 +294,12 @@
 
     <!-- Theme js-->
     <script src="{{ asset('/asset/front/abzar/js/script.js') }}"></script>
+    <script src="{{ asset('/asset/front/abzar/js/sweetalert2.all.min.js') }}"></script>
+    <script src="{{ asset('/asset/front/abzar/js/custom/main.js') }}"></script>
+
     <script>
         let add_product_favorite_url = "{{ route('addProductToFavorites') }}";
+
     </script>
 
     @yield('scripts')
@@ -335,6 +316,7 @@
         if ($(window).width() > '576') {
             $('footer').footerReveal();
         }
+
     </script>
 
 </body>

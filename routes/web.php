@@ -91,5 +91,5 @@ Route::get('/profile/edit', [ProfileController::class, 'editProfile'])->middlewa
 Route::post('/profile/update', [ProfileController::class, 'updateProfile'])->middleware(['auth'])->name('profile.updateProfile');
 Route::post('/profile/password/update', [ProfileController::class, 'updatePassword'])->middleware(['auth'])->name('profile.updatePassword');
 Route::post('/profile/avatar/upload', [ProfileController::class, 'updateAvatar'])->middleware(['auth'])->name('profile.updateAvatar');
-Route::post('/ajax/order/products', [OrderController::class, 'getPr.oductsOfOrder'])->middleware(['auth'])->name('order.details');
+Route::post('/ajax/order/products', [OrderController::class, 'getProductsOfOrder'])->middleware(['auth'])->name('order.details');
 Route::get('/forget', [LoginController::class , 'forgetPassword'])->name('password.forget');

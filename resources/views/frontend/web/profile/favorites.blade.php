@@ -101,4 +101,5 @@
         });
     </script>
     <script src="{{ asset('/asset/front/abzar/js/custom/product_add_to_cart.js') }}"></script>
+    <script src="{{ asset('/asset/front/abzar/js/custom/profile/favorites.js') }}"></script>
 @endsection

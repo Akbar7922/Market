@@ -189,7 +189,7 @@
                 </div>
                 <div class="modal-footer">
                     <button id="cancel_modal" type="button" class="btn btn-secondary">انصراف</button>
-                    <button id="reset_submit" type="button" class="btn btn-primary">ثبت نام</button>
+                    <button id="reset_submit" type="button" class="btn btn-primary">تغییر رمزعبور</button>
                 </div>
             </div>
         </div>

@@ -37,116 +37,10 @@
 
     <!-- Theme css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('asset/front/abzar/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('asset/front/abzar/css/profile.css') }}">
 
     <style>
-        header.header-tools {
-            position: unset !important;
-            margin-top: 20px;
-        }
 
-        .sidebar {
-            display: block;
-        }
-
-        .sidebar>li>a {
-            direction: rtl;
-            border-right: none;
-            border-left: 2px solid var(--theme-color);
-            text-transform: capitalize;
-            color: #000;
-            font-size: calc(14px + (16 - 14) * ((100vw - 320px) / (1920 - 320)));
-            border: none;
-            -webkit-transition: all 0.5s ease;
-            transition: all 0.5s ease;
-            border-radius: 0;
-            background-color: #f8f8f8;
-            cursor: pointer;
-        }
-
-        .sidebar>li>a.active,
-        .sidebar>li>a:hover {
-            border: none;
-            border-right: 2px solid var(--theme-color);
-            border-radius: 0;
-            color: var(--theme-color);
-            -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
-        }
-
-        .sidebar>li {
-            display: block;
-        }
-
-        .profile_icon_edit {
-            width: 130px;
-            text-align: left;
-            position: absolute;
-            margin-top: 100px;
-            margin-left: 20px;
-        }
-
-        .profile_icon_edit>button {
-            padding: 4px 9px;
-        }
-
-        .profile_box {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .btn-outline-success {
-            background-color: #ffffffb5;
-        }
-
-        .onhover-show-div li {
-            padding-left: 20px !important;
-            padding-right: 0 !important;
-        }
-
-        .onhover-show-div li:hover {
-            border: none;
-            border-bottom: 1px solid var(--theme-color);
-            border-radius: 0;
-            transition: all 0.2s ease;
-        }
-
-        .onhover-dropdown {
-            min-width: 190px;
-        }
-
-        .swal2-actions>button {
-            margin-right: 12px;
-            margin-left: 12px;
-            border-radius: 8px;
-            min-height: 40px;
-            min-width: 85px;
-        }
-
-        #modal_change_password input {
-            border-radius: 0px 8px 8px 0px !important;
-        }
-
-        #modal_change_password .show_password , #recaptcha {
-            border-radius: 8px 0px 0px 8px !important;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        .captcha {
-            display: inline-flex;
-            vertical-align: middle;
-            text-align: center;
-        }
-
-        div#captcha {
-            display: inline-flex;
-        }
-        canvas{
-            /* width: 120px;
-            height: 40px; */
-        }
     </style>
 
 </head>
@@ -162,14 +56,21 @@
                     <div class="col-lg-6">
                         <div class="header-contact">
                             <ul>
-                                <li>به سامانه بخواه مارکت خوش آمدید</li>
+                                <li>به بخواه مارکت خوش آمدید</li>
                                 <li><i class="fa fa-phone"></i>شماره تماس : 0656-740-0915</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-6 text-end">
                         @if (Auth::check())
-                            <ul class="header-dropdown">
+                        <div>
+                            <div class="header-dropdown header-custom">
+                                <span style="color: white">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    سبد خرید
+                                </span>
+                            </div>
+                            <ul class="header-dropdown header-custom">
                                 <li class="onhover-dropdown">
                                     <i class="fa fa-user"></i>
                                     {{ 'سلام ' . Auth::user()->name . ' عزیز !' }}
@@ -182,18 +83,27 @@
                                             <i class="fa fa-dashboard"></i>
                                             <a href="{{ route('profile') }}">مدیریت حساب</a>
                                         </li>
+                                        <li id="closeBtn">
+                                            <i class="fa fa-close"></i>
+                                            <a>خروج</a>
+                                            <form id="logoutForm" action="{{ route('logout') }}" method="post">
+                                                @csrf
+                                            </form>
+                                        </li>
+
                                     </ul>
                                 </li>
                             </ul>
+                        </div>
                         @else
-                            <ul class="header-dropdown">
-                                <li class="onhover-dropdown mobile-account">
-                                    <i class="fa fa-user"></i> حساب کاربری
-                                    <ul class="onhover-show-div">
-                                        <li><a href="{{ route('login') }}">ورود / ثبت نام</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <ul class="header-dropdown">
+                            <li class="onhover-dropdown mobile-account">
+                                <i class="fa fa-user"></i> حساب کاربری
+                                <ul class="onhover-show-div">
+                                    <li><a href="{{ route('login') }}">ورود / ثبت نام</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                         @endif
                     </div>
                 </div>
@@ -210,8 +120,7 @@
                                         <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
                                         <ul id="main-menu" class="sm pixelstrap sm-horizontal">
                                             <li>
-                                                <div class="mobile-back text-end">برگشت<i
-                                                        class="fa fa-angle-right ps-2"></i></div>
+                                                <div class="mobile-back text-end">برگشت<i class="fa fa-angle-right ps-2"></i></div>
                                             </li>
                                             <li><a href="{{ route('home') }}">خانه</a></li>
                                             <li class="mega" id="hover-cls">
@@ -222,25 +131,24 @@
                                                         <div class="container">
                                                             <div class="row">
                                                                 @foreach ($categories as $category)
-                                                                    <div class="col mega-box">
-                                                                        <div class="link-section">
-                                                                            <div class="menu-title">
-                                                                                <h5>{{ $category->name }}</h5>
-                                                                            </div>
-                                                                            @if ($category->children)
-                                                                                @foreach ($category->children as $children)
-                                                                                    <div class="menu-content">
-                                                                                        <ul>
-                                                                                            <li>
-                                                                                                <a
-                                                                                                    href="{{ route('search', ['category' => $children->id]) }}">{{ $children->name }}</a>
-                                                                                            </li>
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                @endforeach
-                                                                            @endif
+                                                                <div class="col mega-box">
+                                                                    <div class="link-section">
+                                                                        <div class="menu-title">
+                                                                            <h5>{{ $category->name }}</h5>
                                                                         </div>
+                                                                        @if ($category->children)
+                                                                        @foreach ($category->children as $children)
+                                                                        <div class="menu-content">
+                                                                            <ul>
+                                                                                <li>
+                                                                                    <a href="{{ route('search', ['category' => $children->id]) }}">{{ $children->name }}</a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        @endforeach
+                                                                        @endif
                                                                     </div>
+                                                                </div>
                                                                 @endforeach
                                                             </div>
                                                         </div>
@@ -293,8 +201,7 @@
                         <div class="profile-top">
                             <div class="profile-image">
                                 <div class="profile_box">
-                                    <img src="{{ asset('image/users/' . Auth::user()->pic) }}" alt=""
-                                        class="img-fluid">
+                                    <img src="{{ asset('image/users/' . Auth::user()->pic) }}" alt="" class="img-fluid">
                                     <div class="profile_icon_edit">
                                         <button class="btn btn-outline-success btn-rounded" id="btn_changeAvatar">
                                             <i class="fa fa-pencil" style="vertical-align: middle"></i>
@@ -305,12 +212,10 @@
                             <div class="profile-detail">
                                 <h5>{{ Auth::user()->name . ' ' . Auth::user()->family }}</h5>
                                 <div class="input-group mb-2 mr-sm-2 dashboard-uniqueBox" id="uniqueCodeBox">
-                                    <div class="input-group-prepend btn btn-primary dashboard-uniqueCorner"
-                                        data-clipboard-target="#uniqCode">
+                                    <div class="input-group-prepend btn btn-primary dashboard-uniqueCorner" data-clipboard-target="#uniqCode">
                                         <i class="fa fa-copy" style="margin: auto;"></i>
                                     </div>
-                                    <span id="uniqCode"
-                                        class="form-control rounded-left dashboard-uniqueCode">{{ Auth::user()->unique_code }}</span>
+                                    <span id="uniqCode" class="form-control rounded-left dashboard-uniqueCode">{{ Auth::user()->unique_code }}</span>
                                 </div>
                                 <div class="row">
                                     <a class="link-primary link" id="change_password">تغییر رمزعبور</a>
@@ -320,27 +225,22 @@
                         <div class="faq-tab">
                             <ul class="sidebar">
                                 <li class="nav-item">
-                                    <a href="{{ route('profile') }}"
-                                        class="nav-link @if (request()->url() == route('profile')) active @endif ">اطلاعات
+                                    <a href="{{ route('profile') }}" class="nav-link @if (request()->url() == route('profile')) active @endif ">اطلاعات
                                         حساب</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('profile.addresses') }}"
-                                        class="nav-link @if (request()->url() == route('profile.addresses')) active @endif ">آدرس</a>
+                                    <a href="{{ route('profile.addresses') }}" class="nav-link @if (request()->url() == route('profile.addresses')) active @endif ">آدرس</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('profile.orders') }}" cl
-                                        class="nav-link @if (request()->url() == route('profile.orders')) active @endif ">سفارشات من
+                                    <a href="{{ route('profile.orders') }}" cl class="nav-link @if (request()->url() == route('profile.orders')) active @endif ">سفارشات من
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('profile.favorites') }}"
-                                        class="nav-link @if (request()->url() == route('profile.favorites')) active @endif ">علاقه مندی ها
+                                    <a href="{{ route('profile.favorites') }}" class="nav-link @if (request()->url() == route('profile.favorites')) active @endif ">علاقه مندی ها
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('profile.edit') }}"
-                                        class="nav-link @if (request()->url() == route('profile.edit')) active @endif ">ویرایش
+                                    <a href="{{ route('profile.edit') }}" class="nav-link @if (request()->url() == route('profile.edit')) active @endif ">ویرایش
                                         اطلاعات کاربری
                                     </a>
                                 </li>
@@ -378,9 +278,9 @@
                             <p>بخواه مارکت ، سامانه آنلاین خرید موادغذایی و مواد خوراکی با قیمتی مناسب و روش های پرداخت
                                 متنوع</p>
                             <p style="text-align: center;margin-top: 0.5rem">
-                            <h4>
-                                * هایپرمارکت را به خانه خود بیاورید *
-                            </h4>
+                                <h4>
+                                    * هایپرمارکت را به خانه خود بیاورید *
+                                </h4>
                             </p>
                             <div class="footer-social">
                                 <ul>
@@ -450,23 +350,20 @@
     @yield('modal')
 
     <!-- Start Avatar Picture Modal -->
-    <div class="modal fade " id="modal_avatar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade " id="modal_avatar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-bold">تغییر تصویر پروفایل</h5>
                     <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fa fa-close"></span>
                     </div>
                     <!--end::Close-->
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <form action="{{ route('profile.updateAvatar') }}" method="POST"
-                            enctype="multipart/form-data">
+                        <form action="{{ route('profile.updateAvatar') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="fv-row">
                                 <label class="form-label mt-3">
@@ -478,10 +375,8 @@
                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                             </div>
                             <div class="modal-footer" style="margin-top: 5px;padding-bottom: 0px;">
-                                <button type="button" class="btn btn-danger col-sm-3 btn-rounded"
-                                    onclick="$('#modal_avatar').modal('hide');">انصراف</button>
-                                <button type="button" id="upload_avatar_btn"
-                                    class="btn btn-primary col-sm-4 btn-rounded">آپلود</button>
+                                <button type="button" class="btn btn-danger col-sm-3 btn-rounded" onclick="$('#modal_avatar').modal('hide');">انصراف</button>
+                                <button type="button" id="upload_avatar_btn" class="btn btn-primary col-sm-4 btn-rounded">آپلود</button>
                             </div>
                         </form>
                     </div>
@@ -492,15 +387,13 @@
     <!-- End Avatar Picture Modal -->
 
     <!-- Start Avatar Picture Modal -->
-    <div class="modal fade " id="modal_change_password" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade " id="modal_change_password" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-bold">تغییر رمزعبور</h5>
                     <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
-                        aria-label="Close">
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
                         <span class="fa fa-close"></span>
                     </div>
                     <!--end::Close-->
@@ -514,10 +407,8 @@
                                     <span>رمزعبور قبل</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="password" name="old_password" id="old_password"
-                                        class="form-control">
-                                    <span class="btn btn-outline-primary show_password"><i
-                                            class="fa fa-eye-slash"></i></span>
+                                    <input type="password" name="old_password" id="old_password" class="form-control">
+                                    <span class="btn btn-outline-primary show_password"><i class="fa fa-eye-slash"></i></span>
                                     <div class="fv-plugins-message-container invalid-feedback"></div>
                                 </div>
                             </div>
@@ -527,8 +418,7 @@
                                 </label>
                                 <div class="input-group">
                                     <input type="password" name="password" id="password" class="form-control">
-                                    <span class="btn btn-outline-primary show_password"><i
-                                            class="fa fa-eye-slash"></i></span>
+                                    <span class="btn btn-outline-primary show_password"><i class="fa fa-eye-slash"></i></span>
                                     <div class="fv-plugins-message-container invalid-feedback"></div>
                                 </div>
                             </div>
@@ -537,10 +427,8 @@
                                     <span>تکرار رمزعبور جدید</span>
                                 </label>
                                 <div class="input-group">
-                                    <input type="password" name="confirm_password" id="confirm_password"
-                                        class="form-control">
-                                    <span class="btn btn-outline-primary show_password"><i
-                                            class="fa fa-eye-slash"></i></span>
+                                    <input type="password" name="confirm_password" id="confirm_password" class="form-control">
+                                    <span class="btn btn-outline-primary show_password"><i class="fa fa-eye-slash"></i></span>
                                     <div class="fv-plugins-message-container invalid-feedback"></div>
                                 </div>
                             </div>
@@ -551,10 +439,9 @@
                                 <div class="row">
                                     <div class="col-md-2 col-sm-2"></div>
                                     <div class="col-md-4 col-sm-4 captcha">
-                                        <input type="text" name="captcha" id="input_captcha"
-                                            class="form-control">
-                                            <span id="recaptcha" class="btn btn-outline-primary">
-                                                <i class="fa fa-refresh"></i></span>                                    </div>
+                                        <input type="text" name="captcha" id="input_captcha" class="form-control">
+                                        <span id="recaptcha" class="btn btn-outline-primary">
+                                            <i class="fa fa-refresh"></i></span> </div>
                                     <div class="col-md-4 col-sm-4 captcha">
                                         <div id="captcha"></div>
                                     </div>
@@ -563,10 +450,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer" style="margin-top: 5px;padding-bottom: 0px;">
-                                <button type="button" class="btn btn-danger col-sm-3 btn-rounded"
-                                    onclick="$('#modal_change_password').modal('hide');">انصراف</button>
-                                <button type="button" id="change_password_btn"
-                                    class="btn btn-success col-sm-4 btn-rounded">ویرایش</button>
+                                <button type="button" class="btn btn-danger col-sm-3 btn-rounded" onclick="$('#modal_change_password').modal('hide');">انصراف</button>
+                                <button type="button" id="change_password_btn" class="btn btn-success col-sm-4 btn-rounded">ویرایش</button>
                             </div>
                         </form>
                     </div>
@@ -606,29 +491,30 @@
     <script src="{{ asset('/asset/front/abzar/js/script.js') }}"></script>
     <script>
         let add_product_favorite_url = "{{ route('addProductToFavorites') }}";
+
     </script>
     @yield('scripts')
     <script src="{{ asset('/asset/front/abzar/js/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('/asset/front/abzar/js/clipboard.min.js') }}"></script>
     <script src="{{ asset('asset/front/abzar/js/custom/toastr.min.js') }}"></script>
+    <script src="{{ asset('asset/front/abzar/js/custom/profile.js') }}"></script>
 
     <script>
-        @if (Session::exists('status'))
-            Swal.fire({
-                html: `{{ Session::get('status')['message'] }}`,
-                icon: @if (Session::pull('status')['status'] == 200)
-                    "success"
-                @else
-                    "error"
-                @endif ,
-                buttonsStyling: false,
-                showCancelButton: true,
-                showConfirmButton: false,
-                cancelButtonText: "باشه",
-                customClass: {
-                    cancelButton: "btn btn-primary",
-                }
-            });
+        @if(Session::exists('status'))
+        Swal.fire({
+            html: `{{ Session::get('status')['message'] }}`
+            , icon: @if(Session::pull('status')['status'] == 200)
+            "success"
+            @else "error"
+            @endif
+            , buttonsStyling: false
+            , showCancelButton: true
+            , showConfirmButton: false
+            , cancelButtonText: "باشه"
+            , customClass: {
+                cancelButton: "btn btn-primary"
+            , }
+        });
         @endif
 
         function openSearch() {
@@ -638,166 +524,7 @@
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
-        $(document).ready(function() {
-            $('#btn_changeAvatar').click(function() {
-                $('#modal_avatar').modal('show');
-            });
-            $('#upload_avatar_btn').click(function() {
-                $('#modal_avatar form').submit();
-            });
-            $('#change_password').click(function() {
-                $('#modal_change_password').modal('show');
-                createCaptcha();
-            });
-            $('#change_password_btn').click(function() {
-                $('#modal_change_password').find('.invalid-feedback').fadeOut(500);
-                if (validateChangePassword($('#modal_change_password')))
-                    $('#modal_change_password form').submit();
-            });
 
-            $('.show_password').click(function() {
-                let input = $(this).parent().find('input');
-                if (input.attr('type') == 'password') {
-                    $(this).find('i').removeClass('fa-eye-slash');
-                    $(this).find('i').addClass('fa-eye');
-                    $(this).addClass('active');
-                    input.attr('type', 'text');
-                } else if (input.attr('type') == 'text') {
-                    $(this).find('i').removeClass('fa-eye');
-                    $(this).find('i').addClass('fa-eye-slash');
-                    $(this).removeClass('active');
-                    input.attr('type', 'password');
-                }
-            });
-
-            $('#recaptcha').click(function(){
-                createCaptcha();
-            });
-
-            function validateChangePassword(modal) {
-                let validate = true;
-                let old_password = $('#old_password');
-                let password = $('#password');
-                let confirm_password = $('#confirm_password');
-                let captcha = $('#input_captcha');
-                if (!old_password.val()) {
-                    old_password.parent().find('.invalid-feedback').text('* رمزعبور قبل ، نباید خالی باشد.');
-                    old_password.parent().find('.invalid-feedback').fadeIn(500);
-                    validate = false;
-                }
-                if (!password.val()) {
-                    password.parent().find('.invalid-feedback').text('* رمزعبور جدید ، نباید خالی باشد.');
-                    password.parent().find('.invalid-feedback').fadeIn(500);
-                    validate = false;
-                } else if (password.val().length < 6) {
-                    password.parent().find('.invalid-feedback').text('* رمزعبور ، حداقل باید 6 کاراکتر باشد.');
-                    password.parent().find('.invalid-feedback').fadeIn(500);
-                    validate = false;
-                }
-                if (!confirm_password.val()) {
-                    confirm_password.parent().find('.invalid-feedback').text('* تکرار رمزعبور ، نباید خالی باشد.');
-                    confirm_password.parent().find('.invalid-feedback').fadeIn(500);
-                    validate = false;
-                }
-                if (!captcha.val()) {
-                    captcha.parent().parent().find('.invalid-feedback').text('* عبارت امنیتی ، نباید خالی باشد.');
-                    captcha.parent().parent().find('.invalid-feedback').fadeIn(500);
-                    validate = false;
-                }
-
-                if (validate) {
-                    if (password.val() != confirm_password.val()) {
-                        confirm_password.parent().find('.invalid-feedback').text('* تکرار رمزعبور صحیح نمیباشد.');
-                        confirm_password.parent().find('.invalid-feedback').fadeIn(500);
-                        validate = false;
-                    } else {
-                        if (captcha.val().toUpperCase() != code.toUpperCase()) {
-                            captcha.parent().parent().find('.invalid-feedback').text('* عبارت امنیتی ، نادرست است.');
-                            captcha.parent().parent().find('.invalid-feedback').fadeIn(500);
-                            validate = false;
-                        }
-                    }
-                }
-                return validate;
-            }
-
-            $('#logout').click(function() {
-                Swal.fire({
-                    html: `می‌خواهید خارج شوید؟`,
-                    icon: "question",
-                    buttonsStyling: false,
-                    showCancelButton: true,
-                    confirmButtonText: "بله",
-                    cancelButtonText: 'انصراف',
-                    customClass: {
-                        confirmButton: "btn btn-primary",
-                        cancelButton: 'btn btn-danger'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('form#logoutForm').submit();
-                    }
-                });
-            });
-
-            let clipboard = new ClipboardJS('.dashboard-uniqueCorner');
-            clipboard.on('success', function(e) {
-                showSuccessToast();
-                e.clearSelection();
-            });
-
-            var code;
-
-            function createCaptcha() {
-                //clear the contents of captcha div first
-                document.getElementById('captcha').innerHTML = "";
-                var charsArray =
-                    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%^&*";
-                var lengthOtp = 6;
-                var captcha = [];
-                for (var i = 0; i < lengthOtp; i++) {
-                    //below code will not allow Repetition of Characters
-                    var index = Math.floor(Math.random() * charsArray.length +
-                        1); //get the next character from the array
-                    if (captcha.indexOf(charsArray[index]) == -1)
-                        captcha.push(charsArray[index]);
-                    else i--;
-                }
-                var canv = document.createElement("canvas");
-                canv.id = "captcha";
-                canv.width = 100;
-                canv.height = 35;
-                var ctx = canv.getContext("2d");
-                ctx.font = "25px Georgia";
-                ctx.strokeText(captcha.join(""), 0, 30);
-                //storing captcha so that can validate you can save it somewhere else according to your specific requirements
-                code = captcha.join("");
-                document.getElementById("captcha").appendChild(canv); // adds the canvas to the body element
-            }
-
-            function showSuccessToast() {
-                toastr.options = {
-                    "closeButton": false,
-                    "debug": false,
-                    "newestOnTop": true,
-                    "progressBar": false,
-                    "positionClass": "toast-bottom-left",
-                    "preventDuplicates": true,
-                    "onclick": null,
-                    "showDuration": "30000",
-                    "hideDuration": "100000",
-                    "timeOut": "5000",
-                    "extendedTimeOut": "1000",
-                    "showEasing": "swing",
-                    "hideEasing": "linear",
-                    "showMethod": "fadeIn",
-                    "hideMethod": "fadeOut"
-                };
-
-                let body = "<span style='text-align: right;direction: rtl'> شناسه شما در حافظه ، کپی شد. </span>";
-                toastr.success(body);
-            }
-        });
     </script>
 </body>
 

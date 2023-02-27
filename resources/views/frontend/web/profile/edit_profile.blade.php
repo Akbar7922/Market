@@ -171,7 +171,7 @@
             getCities(city_id);
         });
     </script>
-    <script src="{{ asset('/asset/front/abzar/js/custom/profile.edit.js') }}"></script>
+    <script src="{{ asset('/asset/front/abzar/js/custom/profile/edit.js') }}"></script>
     <script src="{{ asset('asset/back/metronic/js/customize/cities.js') }}"></script>
 
 @endsection
